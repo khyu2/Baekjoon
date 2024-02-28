@@ -1,11 +1,25 @@
-n = int(input())
-a = [0, 0, 1] + [0 for i in range(n)]
+import sys
+sys.setrecursionlimit(10 ** 6)
+input = sys.stdin.readline
 
-for i in range(3, n + 1):
-    a[i] = a[i-1] + 1
-    if i % 3 == 0:
-        a[i] = min(a[i], a[i // 3] + 1)
-    if i % 2 == 0:
-        a[i] = min(a[i], a[i // 2] + 1)
+n = int(input().rstrip())
 
-print(a[n])
+a = {1:0, 2:1}
+
+def go(x):
+    if x in a:
+        return a[x]
+
+    if x % 6 == 0:
+        a[x] = min(go(x // 3), go(x // 2)) + 1
+    elif x % 3 == 0:
+        a[x] = min(go(x // 3), go(x - 1)) + 1
+    elif x % 2 == 0:
+        a[x] = min(go(x // 2), go(x - 1)) + 1
+    else:
+        a[x] = go(x - 1) + 1
+    return a[x]
+
+print(go(n))
+
+
