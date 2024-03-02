@@ -15,7 +15,4 @@ for k in range(n):
     for j in range(n):
       dist[i][j] = min(dist[i][j], dist[i][k] + dist[k][j])
 
-for i in range(n):
-  for j in range(n):
-    print(dist[i][j] if dist[i][j] != math.inf else 0, end=' ')
-  print()
+[print(' '.join(map(lambda x: str(x) if x != math.inf else '0', row))) for row in dist]
