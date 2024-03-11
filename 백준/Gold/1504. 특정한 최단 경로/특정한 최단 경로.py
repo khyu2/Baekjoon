@@ -15,6 +15,8 @@ def dijkstra(s):
   while q:
     dst, u = heapq.heappop(q)
 
+    if dst > d[u]: continue
+    
     for v, w in a[u]:
       nDst = dst + w
       if d[v] > nDst:
