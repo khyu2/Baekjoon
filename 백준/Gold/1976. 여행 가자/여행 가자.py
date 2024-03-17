@@ -17,14 +17,8 @@ class UnionFind:
     self.p[a] += self.p[b]
     self.p[b] = a
 
-  def getSize(self, n):
-    return abs(self.p[n])
-
   def same_set(self, a, b):
     return self.find(a) == self.find(b)
-  
-  def __str__(self):
-    return ' '.join(map(str, self.p))
   
 n = int(input())
 m = int(input())
@@ -35,11 +29,5 @@ for i in range(n):
     if x:
       uf.union(i, j)
 
-# print(uf)
 a = list(map(int, input().split()))
-for i in range(m - 1):
-  if not uf.same_set(a[i]-1, a[i+1]-1):
-    print('NO')
-    exit()
-
-print('YES')
+print('YES' if all(uf.same_set(a[i]-1, a[i+1]-1) for i in range(m-1)) else 'NO')
