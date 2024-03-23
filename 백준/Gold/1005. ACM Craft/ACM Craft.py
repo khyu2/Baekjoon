@@ -1,37 +1,24 @@
 import sys
-from collections import deque
 input = lambda: sys.stdin.readline().rstrip()
 
-def topological_sort(a, in_degrees, n, w):
-  q = deque()
+def dfs(cur):
+  if d[cur] != -1: return d[cur]
+  d[cur] = time[cur]
 
-  for i, degree in enumerate(in_degrees):
-    if degree == 0: q.append(i)
-
-  res = [0] * n
-  while q:
-    u = q.popleft()
-
-    for v in a[u]:
-      in_degrees[v] -= 1
-      res[v] = max(res[v], res[u] + time[u])
-
-      if in_degrees[v] == 0:
-        q.append(v)
-    
-  return res[w-1] + time[w-1]
+  for nxt in a[cur]:
+    d[cur] = max(d[cur], time[cur] + dfs(nxt))
+  
+  return d[cur]
 
 for _ in range(int(input())):
-  n, k = map(int, input().split())
+  n, k  = map(int, input().split())
   time = [*map(int, input().split())]
-  in_degrees = [0] * n
   a = [[] for _ in range(n)]
+  d = [-1] * n
 
   for __ in range(k):
     x, y = map(int, input().split())
-    a[x-1].append(y-1)
-    in_degrees[y-1] += 1
-  
-  w = int(input())
+    a[y-1].append(x-1)
 
-  print(topological_sort(a, in_degrees, n, w))
+  w = int(input())
+  print(dfs(w-1))
