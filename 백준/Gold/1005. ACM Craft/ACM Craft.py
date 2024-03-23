@@ -2,31 +2,23 @@ import sys
 from collections import deque
 input = lambda: sys.stdin.readline().rstrip()
 
-def topological_sort(a, in_degrees, n):
+def topological_sort(a, in_degrees, n, w):
   q = deque()
 
   for i, degree in enumerate(in_degrees):
     if degree == 0: q.append(i)
 
-  res = []
+  res = [0] * n
   while q:
     u = q.popleft()
-    res.append(u)
 
     for v in a[u]:
       in_degrees[v] -= 1
+      res[v] = max(res[v], res[u] + time[u])
+
       if in_degrees[v] == 0:
         q.append(v)
     
-  return res
-
-def cal_building_time(a, in_degrees, n, w): # 위상 정렬 결과, 크기, 목적지
-  res = [0] * n
-  for u in topological_sort(a, in_degrees, n):
-    for v in a[u]:
-      res[v] = max(res[v], res[u] + time[u])
-
-  # print(res)
   return res[w-1] + time[w-1]
 
 for _ in range(int(input())):
@@ -42,4 +34,4 @@ for _ in range(int(input())):
   
   w = int(input())
 
-  print(cal_building_time(a, in_degrees, n, w))
+  print(topological_sort(a, in_degrees, n, w))
